@@ -125,7 +125,7 @@ export const Review = () => {
             <Stack spacing="4">
               <Text>Rating</Text>
 
-              <ReactStars name="rating" />
+              <ReactStars name="rating" isHalf />
 
               <Input
                 fontSize="sm"
@@ -143,6 +143,7 @@ export const Review = () => {
                 borderWidth="1px"
                 borderColor="#B9B9B9"
                 w="max-content"
+                borderRadius="sm"
               >
                 Submit Review
               </Button>
