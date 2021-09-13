@@ -1,62 +1,69 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { Box, Icon, Stack, Text } from "@chakra-ui/react";
+import { StarIcon } from "@chakra-ui/icons";
 
 interface IRatingProps {
-  rating: number;
+  size: number;
+  scale: number;
+  fillColor: string;
+  strokeColor: string;
+  value?: number;
+  disableEdit?: boolean;
+}
+interface IRatingIconProps {
+  fill: Boolean;
+}
+interface IRatingButtonProps {
+  idx: number;
+  fill: Boolean;
 }
 
-export const Rating = ({ rating }: IRatingProps) => {
-  const [state, setState] = useState({
-    rating: rating,
-    tempRating: 0,
-  });
+export const Rating = React.forwardRef<any, IRatingProps>(
+  ({ size, scale, fillColor, strokeColor, value, disableEdit }, ref) => {
+    const [rating, setRating] = useState(() => value ? Math.floor(value) : 0);
+    const buttons = [];
 
-  const handleMouseover = (rating: number) => {
-    setState((prev) => ({
-      rating: rating,
-      tempRating: prev.rating,
-    }));
-  };
-  const handleMouseout = () => {
-    setState((prev) => ({
-      ...prev,
-      rating: prev.tempRating,
-    }));
-  };
-
-  const rate = (rating: number) => {
-    setState((prev) => ({
-      rating,
-      tempRating: rating,
-    }));
-  };
-
-  const renderStars = () => {
-    let stars = [];
-    for (let i = 0; i < 10; i++) {
-      console.log("i", i);
-      let klass = "ion-ios-star-outline";
-      if (state.rating >= i && state.rating !== null) {
-        klass = "ion-ios-star";
+    const onClick = (idx: number) => {
+      if (!isNaN(idx)) {
+        if (rating === 1 && idx === 1) {
+          setRating(0);
+        } else {
+          setRating(idx);
+        }
       }
-      stars.push(
-        <i
-          style={{
-            display: "inline-block",
-            width: "7px",
-            overflow: "hidden",
-            direction: i % 2 === 0 ? "ltr" : "rtl",
-          }}
-          className={klass}
-          onMouseOver={() => handleMouseover(i)}
-          onClick={() => rate(i)}
-          onMouseOut={() => handleMouseout()}
+    };
+
+    const RatingIcon = ({ fill }: IRatingIconProps) => {
+      return (
+        <StarIcon
+          h={`${size}px`}
+          w={`${size}px`}
+          color={fillColor}
+          stroke={strokeColor}
+          // onClick={onClick}
+          fillOpacity={fill ? "100%" : "0"}
+          mr="1"
         />
       );
+    };
+
+    const RatingButton = ({ idx, fill }: IRatingButtonProps) => {
+      return (
+        <Box
+          as="button"
+          aria-label={`Rate ${idx}`}
+          onClick={() => disableEdit ? null : onClick(idx)}
+          _focus={{ outline: 0 }}
+        >
+          <RatingIcon fill={fill} />
+        </Box>
+      );
+    };
+
+    for (let i = 1; i <= scale; i++) {
+      buttons.push(<RatingButton key={i} idx={i} fill={i <= rating} />);
     }
 
-    return stars;
-  };
-
-  return <div className="rating">{renderStars()}</div>;
-};
+    return <>{buttons}</>;
+  }
+);

@@ -1,7 +1,8 @@
 export interface IProduct {
   title: string;
   reviews: IReview[];
-  img?: string
+  img?: string;
+  id: string
 }
 
 export interface IReview {
