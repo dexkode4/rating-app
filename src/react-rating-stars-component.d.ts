@@ -10,7 +10,7 @@ declare module 'react-rating-stars-component' {
     name: string;
 
     /** the value of the star rating to display. i.e. the number of filled stars */
-    value: number;
+    value?: number;
 
     /** number of icons in rating, default `5` */
     starCount?: number | undefined;

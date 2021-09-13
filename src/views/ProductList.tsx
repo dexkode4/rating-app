@@ -11,7 +11,7 @@ export const ProductList = () => {
           products.map((product, index) => (
             {
               ...product,
-              img: `https://picsum.photos/200/300?random=${index+1}`
+              img: `https://picsm.photos/200/300?random=${index+1}`
             }
           )).map((product) => (
             <ProductCard key={product.img} data={product} />
